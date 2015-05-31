@@ -49,6 +49,14 @@ public class WolUtil
                 }
                 System.out.print('\n');
             }
+            try {
+                InetAddress addr = Inet4Address.getByAddress("", new byte[]{0x0, 0x0, 0x0, 0x0});
+                System.out.println("Sending WOL packet to " + addr.toString().replaceFirst("^[^/]*/", ""));
+                sendWolPacket(addr, targetMac);
+                System.out.println(".");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
