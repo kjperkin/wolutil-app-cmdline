@@ -1,5 +1,7 @@
-apply plugin: 'java'
+apply plugin: "application"
+mainClassName = "lightbulbz.wolutil.WolUtil"
 
-repositories {
-    mavenCentral()
+dependencies {
+    compile project(':libraries:wolutil-lib-common')
+    runtime project(':libraries:wolutil-lib-common')
 }

@@ -1,0 +1,3 @@
+[submodule "libraries/wolutil-lib-common"]
+	path = libraries/wolutil-lib-common
+	url = /home/kevin/development/java/wolutil-lib-common
