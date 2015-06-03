@@ -1,7 +1,7 @@
-package lightbulbz.wolutil;
+package com.lightbulbz.wolutil;
 
-import lightbulbz.net.MacAddress;
-import lightbulbz.net.MacAddressFormatException;
+import com.lightbulbz.net.MacAddress;
+import com.lightbulbz.net.MacAddressFormatException;
 
 import java.io.IOException;
 import java.net.*;

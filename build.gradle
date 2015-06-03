@@ -1,6 +1,6 @@
 apply plugin: "application"
 applicationName = "wolutil"
-mainClassName = "lightbulbz.wolutil.WolUtil"
+mainClassName = "com.lightbulbz.wolutil.WolUtil"
 sourceCompatibility = 1.7
 
 dependencies {
