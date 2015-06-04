@@ -2,14 +2,11 @@ package com.lightbulbz.wolutil;
 
 import com.lightbulbz.net.MacAddress;
 import com.lightbulbz.net.MacAddressFormatException;
+import com.lightbulbz.net.NetUtils;
 import com.lightbulbz.net.WOLPacketSender;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
 
 public class WolUtil {
 
@@ -28,7 +25,7 @@ public class WolUtil {
 
         if (targetMac != null) {
             System.out.println("Target MAC address is " + targetMac.toString());
-            for (InetAddress addr : getBroadcastAddresses()) {
+            for (InetAddress addr : NetUtils.getBroadcastAddresses()) {
                 System.out.println("Sending WOL packet to broadcast address " + addr.toString().replaceFirst("^[^/]*/", ""));
                 for (int j = 0; j < 10; j++) {
                     try {
@@ -57,35 +54,9 @@ public class WolUtil {
         }
     }
 
-    private static Collection<InetAddress> getBroadcastAddresses() {
-        Set<InetAddress> broadcastAddresses = new HashSet<>();
-        try {
-            Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
-            while (ifaces.hasMoreElements()) {
-                NetworkInterface iface = ifaces.nextElement();
-                if (iface.isUp() && !iface.isLoopback() && !iface.isPointToPoint()) {
-                    for (InterfaceAddress addr : iface.getInterfaceAddresses()) {
-                        System.out.println("Found interface address " + addr.getAddress().toString());
-                        if (addr.getBroadcast() != null) {
-                            System.out.println("Broadcast address is " + addr.getBroadcast().toString());
-                            broadcastAddresses.add(addr.getBroadcast());
-                        }
-                    }
-                }
-            }
-        } catch (SocketException ex) {
-            ex.printStackTrace();
-        }
-        for (InetAddress addr : broadcastAddresses) {
-            System.out.println(addr);
-        }
-        return broadcastAddresses;
-    }
-
     public static void usage() {
         System.out.println("Usage: wolutil <mac_address>");
     }
-
 
     public static void sendWolPacket(InetAddress targetAddr, MacAddress targetMac) throws IOException {
         new WOLPacketSender(targetAddr, targetMac).sendPacket();
