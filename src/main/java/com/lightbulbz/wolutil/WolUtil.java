@@ -2,6 +2,7 @@ package com.lightbulbz.wolutil;
 
 import com.lightbulbz.net.MacAddress;
 import com.lightbulbz.net.MacAddressFormatException;
+import com.lightbulbz.net.WOLPacketSender;
 
 import java.io.IOException;
 import java.net.*;
@@ -10,11 +11,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 
-public class WolUtil
-{
-    private static final byte FF = (byte)0xff;
-    private static final byte[] PAYLOAD_START = {FF, FF, FF, FF, FF, FF};
-    private static final int WOL_PACKET_SIZE = 6 + 16*6;
+public class WolUtil {
 
     public static void main(String[] argv) {
         if (argv.length != 1) {
@@ -91,15 +88,8 @@ public class WolUtil
 
 
     public static void sendWolPacket(InetAddress targetAddr, MacAddress targetMac) throws IOException {
-        DatagramSocket mySock = new DatagramSocket();
-        byte[] packetBytes = new byte[WOL_PACKET_SIZE];
-        byte[] macBytes = targetMac.getAddressBytes();
-        System.arraycopy(PAYLOAD_START, 0, packetBytes, 0, PAYLOAD_START.length);
-        for (int i = PAYLOAD_START.length; i < WOL_PACKET_SIZE; i+= macBytes.length) {
-            System.arraycopy(macBytes, 0, packetBytes, i, macBytes.length);
-        }
-        SocketAddress addr = new InetSocketAddress(targetAddr, 9);
-        mySock.send(new DatagramPacket(packetBytes, packetBytes.length, addr));
+        new WOLPacketSender(targetAddr, targetMac).sendPacket();
     }
+
 }
 
